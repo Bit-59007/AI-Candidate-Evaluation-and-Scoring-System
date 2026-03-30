@@ -1,0 +1,1360 @@
+{
+  "name": "Ai Profession-Based Scoring Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Survey Form",
+        "formDescription": "Simply Add your Data",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Gender",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Male"
+                  },
+                  {
+                    "option": "Female"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Mobile No",
+              "fieldType": "number",
+              "placeholder": "Please Give Correct No With Country Code",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Address",
+              "fieldType": "textarea"
+            },
+            {
+              "fieldLabel": "Profession"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -176,
+        16
+      ],
+      "id": "c305ed0d-5756-4a3b-bb9d-f075e3de3b78",
+      "name": "On form submission",
+      "webhookId": "2b5a685c-4f6d-4199-989f-1b4d9aaa8ebe"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Gender }}",
+                    "rightValue": "Male",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1bca81d7-ae72-4e65-96d8-2baca361e376"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c8a905f-e197-40bd-bb1f-2754c1d0940e",
+                    "leftValue": "={{ $json.Gender }}",
+                    "rightValue": "Female",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        16
+      ],
+      "id": "e52a3606-d6e4-4474-8ced-ea609964954f",
+      "name": "Male/Female"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvqNAw7a4brZ4d5",
+          "mode": "list",
+          "cachedResultName": "Person",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblvqNAw7a4brZ4d5"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Gender": "={{ $json.Gender }}",
+            "Address": "={{ $json.Address }}",
+            "Profession": "={{ $json.Profession }}",
+            "Mobile No": "={{ $json['Mobile No'].toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        -80
+      ],
+      "id": "e52d2a54-66fe-4ace-9a2f-0f871dd34c9d",
+      "name": "Male",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "notes": "For Males\n"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVXDFnE1uoO8b9j",
+          "mode": "list",
+          "cachedResultName": "Contact Details",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblVXDFnE1uoO8b9j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FullName": "={{ $json.Name }}",
+            "Mobile No": "={{ $json['Mobile No'].toString() }}",
+            "Address": "={{ $json.Address }}",
+            "Profession": "={{ $json.Profession }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FullName",
+              "displayName": "FullName",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        112
+      ],
+      "id": "99342f43-3007-47f1-ae94-d377152ed9a0",
+      "name": "Female",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fields.Profession }}",
+                    "rightValue": "Ai Manager",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1bca81d7-ae72-4e65-96d8-2baca361e376"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c8a905f-e197-40bd-bb1f-2754c1d0940e",
+                    "leftValue": "={{ $json.fields.Profession }}",
+                    "rightValue": "Data Scientist",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f37e9ce1-568a-417f-99b7-7586161d9a63",
+                    "leftValue": "={{ $json.fields.Profession }}",
+                    "rightValue": "Accountant",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        496,
+        -96
+      ],
+      "id": "f2c50817-9501-4476-abf3-e5c80c56699e",
+      "name": "Rating Based On Profession"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvqNAw7a4brZ4d5",
+          "mode": "list",
+          "cachedResultName": "Person",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblvqNAw7a4brZ4d5"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Name": "={{ $json.fields.Name }}",
+            "Rating": 5
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -272
+      ],
+      "id": "718966e4-013f-40e2-b2cd-6383358b7ef5",
+      "name": "Ai Manager",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvqNAw7a4brZ4d5",
+          "mode": "list",
+          "cachedResultName": "Person",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblvqNAw7a4brZ4d5"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Name": "={{ $json.fields.Name }}",
+            "Rating": 3
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -80
+      ],
+      "id": "2ec3c27c-6269-46ff-82ec-0c705ba0034f",
+      "name": "Data Scientist",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvqNAw7a4brZ4d5",
+          "mode": "list",
+          "cachedResultName": "Person",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblvqNAw7a4brZ4d5"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "Name": "={{ $json.fields.Name }}",
+            "Rating": 1
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        112
+      ],
+      "id": "8a00e7fb-7c84-4afb-b93e-2391f82bda32",
+      "name": "Accountant",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are a poem creater so i give you details given below behave according to these instructions :\n\nInstructions :\n1.Story must be simple and easy to understand\n2. story must on two lines\nThings you add in story are:\n\nName:{{ $('On form submission').item.json.Name }}\n \nProfession:{{ $json.fields.Profession }}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        944,
+        -80
+      ],
+      "id": "414acf5e-fa59-446e-adcc-aea97ce847a8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        944,
+        144
+      ],
+      "id": "6ebcc843-6d83-48cc-8137-96fd055c6a91",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "l5NC8QjpyjAEiSE7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblvqNAw7a4brZ4d5",
+          "mode": "list",
+          "cachedResultName": "Person",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblvqNAw7a4brZ4d5"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Male').item.json.id }}",
+            "Poem": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Male",
+                  "value": "Male"
+                },
+                {
+                  "name": "Female",
+                  "value": "Female"
+                },
+                {
+                  "name": "",
+                  "value": ""
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Poem",
+              "displayName": "Poem",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -176
+      ],
+      "id": "ff31e7f4-91b4-4d38-976f-41dfde5314a7",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('On form submission').item.json.Gender }}",
+                    "rightValue": "Male",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "1bca81d7-ae72-4e65-96d8-2baca361e376"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5c8a905f-e197-40bd-bb1f-2754c1d0940e",
+                    "leftValue": "={{ $('On form submission').item.json.Gender }}",
+                    "rightValue": "Female",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        -96
+      ],
+      "id": "84fb259f-6c49-4739-a32e-a0283e7f4277",
+      "name": "Rating Based On Profession1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app7L0bGLZeUv7bDB",
+          "mode": "list",
+          "cachedResultName": "My First Table",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVXDFnE1uoO8b9j",
+          "mode": "list",
+          "cachedResultName": "Contact Details",
+          "cachedResultUrl": "https://airtable.com/app7L0bGLZeUv7bDB/tblVXDFnE1uoO8b9j"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Female').item.json.id }}",
+            "Poem": "={{ $('AI Agent').item.json.output }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "FullName",
+              "displayName": "FullName",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile No",
+              "displayName": "Mobile No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Profession",
+              "displayName": "Profession",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Rating",
+              "displayName": "Rating",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Poem",
+              "displayName": "Poem",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        0
+      ],
+      "id": "ce857f17-9951-41c9-a02a-61424195fc19",
+      "name": "Update record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "gSKUssWTeFFetjDk",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Male/Female",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Male/Female": {
+      "main": [
+        [
+          {
+            "node": "Male",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Female",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Male": {
+      "main": [
+        [
+          {
+            "node": "Rating Based On Profession",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rating Based On Profession": {
+      "main": [
+        [
+          {
+            "node": "Ai Manager",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Data Scientist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Accountant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Scientist": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ai Manager": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accountant": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Rating Based On Profession1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Female": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rating Based On Profession1": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1d729a9e-058c-4100-aeb8-e7cff2107f0b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0454814d4ab80855dcb2d4b2f2a396f7cea09e6f9d717e8d8181e3bbb14a19a5"
+  },
+  "id": "l7awB2eMXHMJVhQi",
+  "tags": []
+}
